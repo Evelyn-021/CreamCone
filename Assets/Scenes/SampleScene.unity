@@ -3094,6 +3094,9 @@ GameObject:
   - component: {fileID: 1047716816}
   - component: {fileID: 1047716815}
   - component: {fileID: 1047716818}
+  - component: {fileID: 1047716821}
+  - component: {fileID: 1047716820}
+  - component: {fileID: 1047716819}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -3189,6 +3192,7 @@ Transform:
   m_Children:
   - {fileID: 1732989623}
   - {fileID: 295188527}
+  - {fileID: 1621827970}
   m_Father: {fileID: 227413069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1047716818
@@ -3205,6 +3209,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   normalSpeed: 2
   angrySpeed: 3.5
+  currentSpeed: 0
+  movingRight: 1
   groundCheck: {fileID: 295188527}
   groundCheckDistance: 0.3
   groundMask:
@@ -3225,6 +3231,51 @@ MonoBehaviour:
   - {fileID: 6499335366341904026, guid: b46f07d096eac604199bf927b1f76405, type: 3}
   - {fileID: 7429302989496001245, guid: 2847a8b5a06d7924da5b710a4d5841bf, type: 3}
   - {fileID: 623896910402288440, guid: cd88e1f175924f54299f1bfb4bdd22a4, type: 3}
+  rb: {fileID: 0}
+  anim: {fileID: 0}
+  enemyCollider: {fileID: 0}
+  movement: {fileID: 0}
+  bubble: {fileID: 0}
+  foodDrop: {fileID: 0}
+  currentState: 0
+  currentBubbleDirection: {x: 0, y: 0}
+  originalGravity: 0
+--- !u!114 &1047716819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047716813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f54f870e4d741c49a3e86ce84d0fbd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+--- !u!114 &1047716820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047716813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c902cd463d6d4722b7f35baf3f463e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFoodDrop
+--- !u!114 &1047716821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047716813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b830b8a4569c4ec18f20dcfb3a1ebc7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBubble
 --- !u!1 &1054759178
 GameObject:
   m_ObjectHideFlags: 0
@@ -3550,6 +3601,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1621827969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1621827970}
+  m_Layer: 0
+  m_Name: WallCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1621827970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621827969}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.96, y: 1.41, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1047716817}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1732989622
 GameObject:
