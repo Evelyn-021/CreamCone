@@ -18,6 +18,6 @@ UserSettings/
 
 .vscode/
 .idea/
-
+.plastic/
 .DS_Store
 Thumbs.db
