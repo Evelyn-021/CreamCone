@@ -3,6 +3,8 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+!BuildWeb/Build/
+!BuildWeb/Build/**
 [Ll]ogs/
 UserSettings/
 
