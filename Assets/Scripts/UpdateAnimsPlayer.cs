@@ -17,6 +17,11 @@ public class UpdateAnimsPlayer : MonoBehaviour
 
     public void UpdateAnimation()
     { 
+        if (playerController.isDead)
+        {
+            animationManager.setState(new DeathPlayerStateAnim(playerController.animPlayer));
+            return;
+        }
 
         //Actualizar animaciones de ataque
         if (playerController.isAttacking)

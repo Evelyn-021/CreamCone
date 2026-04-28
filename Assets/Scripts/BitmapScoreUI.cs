@@ -34,7 +34,7 @@ public class BitmapScoreUI : MonoBehaviour
         UpdateScoreUI();
     }
 
-    private void UpdateScoreUI()
+    public void UpdateScoreUI()
     {
         foreach (Transform child in numbersContainer)
         {

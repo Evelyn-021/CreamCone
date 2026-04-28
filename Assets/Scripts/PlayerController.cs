@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 [ HideInInspector]  public Rigidbody2D rb;
     
 [ HideInInspector] public Animator animPlayer;
-
+[HideInInspector] public bool isDead;
 
     public Controles controles;
 
@@ -89,4 +89,15 @@ private void OnJumpRelease (InputAction.CallbackContext context)
     {
         jump.JumpRelease();
     }
+
+
+    public void Die()
+{
+    if (isDead) return;
+
+    isDead = true;
+    rb.linearVelocity = Vector2.zero;
+
+    new DeathPlayerStateAnim(animPlayer);
+}
 }
