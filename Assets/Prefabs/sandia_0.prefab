@@ -169,4 +169,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ebca6432eeff554fa054d0696a44420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FoodDrop
+  points: 150
   fallSpeedLimit: -2

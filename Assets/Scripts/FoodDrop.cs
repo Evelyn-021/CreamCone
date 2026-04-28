@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class FoodDrop : MonoBehaviour
 {
+
+    public int points = 100;
     public float fallSpeedLimit = -2f;
     private Rigidbody2D rb;
 
@@ -17,4 +19,19 @@ public class FoodDrop : MonoBehaviour
             rb.linearVelocity = new Vector2(0f, fallSpeedLimit);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+{
+    if (other.CompareTag("Player"))
+    {
+        if (BitmapScoreUI.Instance != null)
+{
+    BitmapScoreUI.Instance.AddScore(points);
+}
+
+        Destroy(gameObject);
+    }
+}
+
+    
 }
