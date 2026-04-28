@@ -8,6 +8,7 @@ TagManager:
   - LevelLimit
   - BubbleTurn
   - EnemyJumpZone
+  - Food
   layers:
   - Default
   - TransparentFX

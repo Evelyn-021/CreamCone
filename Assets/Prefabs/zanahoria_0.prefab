@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5973702531460575149}
   m_Layer: 7
   m_Name: zanahoria_0
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

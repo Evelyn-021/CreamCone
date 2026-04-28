@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6894721133438731660}
   m_Layer: 7
   m_Name: "pi\xF1a_0"
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -169,4 +169,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ebca6432eeff554fa054d0696a44420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FoodDrop
+  points: 100
   fallSpeedLimit: -2

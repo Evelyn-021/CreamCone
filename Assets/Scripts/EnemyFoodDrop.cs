@@ -56,6 +56,16 @@ public class EnemyFoodDrop : MonoBehaviour
             GameObject selectedFood = enemyController.foodPrefabs[index];
 
             Instantiate(selectedFood, transform.position, Quaternion.identity);
+
+            if (LevelGoalManager.Instance != null)
+            {
+                LevelGoalManager.Instance.FruitSpawned();
+            }
+        }
+
+        if (LevelGoalManager.Instance != null)
+        {
+            LevelGoalManager.Instance.EnemyDefeated();
         }
 
         Destroy(gameObject);

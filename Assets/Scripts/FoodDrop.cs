@@ -28,7 +28,10 @@ public class FoodDrop : MonoBehaviour
 {
     BitmapScoreUI.Instance.AddScore(points);
 }
-
+    if (LevelGoalManager.Instance != null)
+        {
+            LevelGoalManager.Instance.FruitCollected();
+        }
         Destroy(gameObject);
     }
 }
