@@ -46,6 +46,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Nubes
+    uniqueID: 1246747243
+    locked: 0
   - name: Ground
     uniqueID: 1703484793
     locked: 0
