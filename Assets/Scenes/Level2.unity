@@ -2931,7 +2931,7 @@ GameObject:
   - component: {fileID: 798703526}
   - component: {fileID: 798703525}
   - component: {fileID: 798703524}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: OneWayPlatforms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4682,7 +4682,7 @@ MonoBehaviour:
   groundCheckDistance: 0.59
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   coyoteTime: 0.2
   bufferJumpTime: 0.2
   bufferJumpCounter: 0

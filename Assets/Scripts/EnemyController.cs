@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyMovement))]
+[RequireComponent(typeof(EnemyVerticalPatrol))]
 [RequireComponent(typeof(EnemyBubble))]
 [RequireComponent(typeof(EnemyFoodDrop))]
 public class EnemyController : MonoBehaviour
@@ -38,6 +39,7 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public Collider2D enemyCollider;
 
     [HideInInspector] public EnemyMovement movement;
+    [HideInInspector] public EnemyVerticalPatrol verticalPatrol;
     [HideInInspector] public EnemyBubble bubble;
     [HideInInspector] public EnemyFoodDrop foodDrop;
 
@@ -58,6 +60,12 @@ public class EnemyController : MonoBehaviour
             movement = gameObject.AddComponent<EnemyMovement>();
         }
 
+        verticalPatrol = GetComponent<EnemyVerticalPatrol>();
+        if (verticalPatrol == null)
+        {
+            verticalPatrol = gameObject.AddComponent<EnemyVerticalPatrol>();
+        }
+
         bubble = GetComponent<EnemyBubble>();
         if (bubble == null)
         {
@@ -76,6 +84,7 @@ public class EnemyController : MonoBehaviour
         currentSpeed = normalSpeed;
         anim.SetInteger("stateAnim", 1);
         movement.UpdateGroundCheckPosition();
+        IgnoreCollisionsWithOtherEnemies();
     }
 
     private void FixedUpdate()
@@ -92,6 +101,11 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
+        if (verticalPatrol.OnUpdate())
+        {
+            return;
+        }
+
         movement.OnUpdate();
     }
 
@@ -103,6 +117,20 @@ public class EnemyController : MonoBehaviour
     public void PopEnemy()
     {
         foodDrop.PopEnemy();
+    }
+
+    public void IgnoreCollisionsWithOtherEnemies()
+    {
+        if (enemyCollider == null) return;
+
+        EnemyController[] enemies = FindObjectsByType<EnemyController>(FindObjectsSortMode.None);
+
+        foreach (EnemyController otherEnemy in enemies)
+        {
+            if (otherEnemy == this || otherEnemy.enemyCollider == null) continue;
+
+            Physics2D.IgnoreCollision(enemyCollider, otherEnemy.enemyCollider, true);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -125,6 +153,26 @@ public class EnemyController : MonoBehaviour
         {
             bubble.BounceBubble(other);
             return;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        IgnoreEnemyCollision(collision.collider);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        IgnoreEnemyCollision(collision.collider);
+    }
+
+    private void IgnoreEnemyCollision(Collider2D otherCollider)
+    {
+        EnemyController otherEnemy = otherCollider.GetComponentInParent<EnemyController>();
+
+        if (otherEnemy != null && otherEnemy != this && otherEnemy.enemyCollider != null)
+        {
+            Physics2D.IgnoreCollision(enemyCollider, otherEnemy.enemyCollider, true);
         }
     }
 

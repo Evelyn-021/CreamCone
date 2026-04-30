@@ -18,7 +18,7 @@ TagManager:
   - UI
   - Ground
   - Fruits
-  - 
+  - OneWayPlatforms
   - 
   - 
   - 
@@ -45,6 +45,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: torre
+    uniqueID: 2955484535
     locked: 0
   - name: Nubes
     uniqueID: 1246747243

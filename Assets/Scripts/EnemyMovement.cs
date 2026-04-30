@@ -52,6 +52,7 @@ public class EnemyMovement : MonoBehaviour
             scale.x *= -1;
             enemyController.visual.localScale = scale;
         }
+        enemyController.verticalPatrol.RegisterHorizontalFlip();
     }
 
     public void UpdateGroundCheckPosition()

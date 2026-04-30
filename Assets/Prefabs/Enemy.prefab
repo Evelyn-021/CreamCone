@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 5191795423401040134}
   - component: {fileID: 5630644002293685988}
   - component: {fileID: 1366315411720884881}
+  - component: {fileID: 7441887712345678901}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -155,15 +156,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180fb8c9232fab94e955d662b2e40e72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  normalSpeed: 2
-  angrySpeed: 3.5
+  normalSpeed: 2.8
+  angrySpeed: 4.5
   currentSpeed: 0
   movingRight: 1
   groundCheck: {fileID: 7337713904316672881}
   groundCheckDistance: 0.3
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   groundCheckOffset: 0.5
   visual: {fileID: 9133884210832281944}
   trappedTime: 30
@@ -183,6 +184,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   enemyCollider: {fileID: 0}
   movement: {fileID: 0}
+  verticalPatrol: {fileID: 0}
   bubble: {fileID: 0}
   foodDrop: {fileID: 0}
   currentState: 0
@@ -224,6 +226,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f54f870e4d741c49a3e86ce84d0fbd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+--- !u!114 &7441887712345678901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4933504238401294444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fdb7ed3b97b47efb180a29803f92210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyVerticalPatrol
+  useVerticalPatrol: 1
+  flipsBeforeVerticalMove: 4
+  verticalSearchDistance: 4
+  verticalPatrolSpeed: 3.5
+  verticalStopDistance: 0.05
+  platformSearchExtraDistance: 0.8
+  verticalMoveCooldown: 1.5
+  verticalCastWidthMultiplier: 2.5
+  horizontalLandingSearchDistance: 3
+  horizontalLandingSearchStep: 0.5
+  oppositeDirectionLandingPenalty: 1.5
+  verticalPatrolPlatformMask:
+    serializedVersion: 2
+    m_Bits: 256
+  debugVerticalPatrol: 0
 --- !u!1 &5768669818489330553
 GameObject:
   m_ObjectHideFlags: 0

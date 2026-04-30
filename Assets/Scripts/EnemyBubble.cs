@@ -37,6 +37,7 @@ public class EnemyBubble : MonoBehaviour
         enemyController.currentState = EnemyController.EnemyState.TrappedBubble;
         enemyController.currentSpeed = 0f;
         trappedTimer = enemyController.trappedTime;
+        enemyController.verticalPatrol.ResetVerticalPatrol();
 
         enemyController.currentBubbleDirection = enemyController.bubbleDirection;
         enemyController.currentBubbleDirection.x = Mathf.Abs(enemyController.currentBubbleDirection.x) *
@@ -59,6 +60,7 @@ public class EnemyBubble : MonoBehaviour
         enemyController.rb.linearVelocity = Vector2.zero;
 
         enemyController.enemyCollider.isTrigger = false;
+        enemyController.IgnoreCollisionsWithOtherEnemies();
 
         enemyController.anim.SetInteger("stateAnim", 3);
     }
