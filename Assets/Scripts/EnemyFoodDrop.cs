@@ -2,6 +2,21 @@ using UnityEngine;
 
 public class EnemyFoodDrop : MonoBehaviour
 {
+    [Header("Drops raros")]
+    public GameObject[] rareFoodPrefabs;
+    [Range(0f, 1f)] public float rareFoodChance = 0.18f;
+
+    [Header("Diamantes")]
+    public GameObject[] fallingDiamondPrefabs;
+    [Range(0f, 1f)] public float fallingDiamondChance = 0.25f;
+    public float diamondSpawnMinX = -4.6f;
+    public float diamondSpawnMaxX = 5.8f;
+    public float diamondSpawnY = 2.55f;
+
+    [Header("Water Bubble")]
+    public GameObject[] waterBubblePrefabs;
+    [Range(0f, 1f)] public float waterBubbleChance = 0.12f;
+
     private EnemyController enemyController;
     private float spinTimer;
 
@@ -50,11 +65,10 @@ public class EnemyFoodDrop : MonoBehaviour
 
     private void TurnIntoFood()
     {
-        if (enemyController.foodPrefabs != null && enemyController.foodPrefabs.Length > 0)
-        {
-            int index = Random.Range(0, enemyController.foodPrefabs.Length);
-            GameObject selectedFood = enemyController.foodPrefabs[index];
+        GameObject selectedFood = ChooseFoodDrop();
 
+        if (selectedFood != null)
+        {
             Instantiate(selectedFood, transform.position, Quaternion.identity);
 
             if (LevelGoalManager.Instance != null)
@@ -63,11 +77,68 @@ public class EnemyFoodDrop : MonoBehaviour
             }
         }
 
+        TrySpawnFallingDiamond();
+        TrySpawnWaterBubble();
+
         if (LevelGoalManager.Instance != null)
         {
-            LevelGoalManager.Instance.EnemyDefeated();
+            LevelGoalManager.Instance.EnemyDefeated(enemyController);
         }
 
         Destroy(gameObject);
+    }
+
+    private GameObject ChooseFoodDrop()
+    {
+        if (rareFoodPrefabs != null &&
+            rareFoodPrefabs.Length > 0 &&
+            Random.value < rareFoodChance)
+        {
+            return rareFoodPrefabs[Random.Range(0, rareFoodPrefabs.Length)];
+        }
+
+        if (enemyController.foodPrefabs == null || enemyController.foodPrefabs.Length == 0)
+        {
+            return null;
+        }
+
+        return enemyController.foodPrefabs[Random.Range(0, enemyController.foodPrefabs.Length)];
+    }
+
+    private void TrySpawnFallingDiamond()
+    {
+        if (fallingDiamondPrefabs == null ||
+            fallingDiamondPrefabs.Length == 0 ||
+            Random.value >= fallingDiamondChance)
+        {
+            return;
+        }
+
+        float spawnX = Random.Range(diamondSpawnMinX, diamondSpawnMaxX);
+        Vector3 spawnPosition = new Vector3(spawnX, diamondSpawnY, transform.position.z);
+        GameObject selectedDiamond = fallingDiamondPrefabs[Random.Range(0, fallingDiamondPrefabs.Length)];
+
+        Instantiate(selectedDiamond, spawnPosition, Quaternion.identity);
+
+        if (LevelGoalManager.Instance != null)
+        {
+            LevelGoalManager.Instance.FruitSpawned();
+        }
+    }
+
+    private void TrySpawnWaterBubble()
+    {
+        if (waterBubblePrefabs == null ||
+            waterBubblePrefabs.Length == 0 ||
+            Random.value >= waterBubbleChance)
+        {
+            return;
+        }
+
+        float spawnX = Random.Range(diamondSpawnMinX, diamondSpawnMaxX);
+        Vector3 spawnPosition = new Vector3(spawnX, diamondSpawnY, transform.position.z);
+        GameObject selectedWaterBubble = waterBubblePrefabs[Random.Range(0, waterBubblePrefabs.Length)];
+
+        Instantiate(selectedWaterBubble, spawnPosition, Quaternion.identity);
     }
 }

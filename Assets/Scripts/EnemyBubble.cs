@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class EnemyBubble : MonoBehaviour
 {
+    [Header("Zonas de direccion")]
+    public string bubbleTurnZoneFilter = "";
+
     private EnemyController enemyController;
     private float trappedTimer;
 
@@ -37,7 +40,10 @@ public class EnemyBubble : MonoBehaviour
         enemyController.currentState = EnemyController.EnemyState.TrappedBubble;
         enemyController.currentSpeed = 0f;
         trappedTimer = enemyController.trappedTime;
-        enemyController.verticalPatrol.ResetVerticalPatrol();
+        if (enemyController.verticalPatrol != null)
+        {
+            enemyController.verticalPatrol.ResetVerticalPatrol();
+        }
 
         enemyController.currentBubbleDirection = enemyController.bubbleDirection;
         enemyController.currentBubbleDirection.x = Mathf.Abs(enemyController.currentBubbleDirection.x) *
@@ -53,19 +59,36 @@ public class EnemyBubble : MonoBehaviour
 
     private void ReleaseEnemy()
     {
-        enemyController.currentState = EnemyController.EnemyState.Angry;
-        enemyController.currentSpeed = enemyController.angrySpeed;
-
-        enemyController.rb.gravityScale = enemyController.originalGravity;
-        enemyController.rb.linearVelocity = Vector2.zero;
-
-        enemyController.enemyCollider.isTrigger = false;
-        enemyController.IgnoreCollisionsWithOtherEnemies();
-
-        enemyController.anim.SetInteger("stateAnim", 3);
+        enemyController.BecomeAngry();
     }
 
-    public void ChangeBubbleDirection(string zoneName)
+    public void ChangeBubbleDirection(Collider2D zone)
+    {
+        if (!CanUseBubbleTurnZone(zone)) return;
+
+        ChangeBubbleDirection(zone.name);
+    }
+
+    private bool CanUseBubbleTurnZone(Collider2D zone)
+    {
+        if (string.IsNullOrWhiteSpace(bubbleTurnZoneFilter)) return true;
+
+        Transform current = zone.transform;
+
+        while (current != null)
+        {
+            if (current.name.Contains(bubbleTurnZoneFilter))
+            {
+                return true;
+            }
+
+            current = current.parent;
+        }
+
+        return false;
+    }
+
+    private void ChangeBubbleDirection(string zoneName)
     {
         if (zoneName.Contains("Left"))
         {

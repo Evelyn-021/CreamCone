@@ -9,6 +9,7 @@ TagManager:
   - BubbleTurn
   - EnemyJumpZone
   - Food
+  - Enemy2
   layers:
   - Default
   - TransparentFX
@@ -63,6 +64,12 @@ TagManager:
     locked: 0
   - name: fruit
     uniqueID: 3140473743
+    locked: 0
+  - name: burbuja
+    uniqueID: 1430989385
+    locked: 0
+  - name: Enemy2
+    uniqueID: 2148313579
     locked: 0
   m_RenderingLayers:
   - Default

@@ -34,7 +34,13 @@ public class LevelGoalManager : MonoBehaviour
 
     public void EnemyDefeated()
     {
+        EnemyDefeated(null);
+    }
+
+    public void EnemyDefeated(EnemyController defeatedEnemy)
+    {
         enemiesAlive--;
+        MakeLastEnemyGroupAngry(defeatedEnemy);
         CheckLevelComplete();
     }
 
@@ -55,6 +61,35 @@ public class LevelGoalManager : MonoBehaviour
         {
             levelCompleted = true;
             SceneManager.LoadScene(nextSceneName);
+        }
+    }
+
+    private void MakeLastEnemyGroupAngry(EnemyController defeatedEnemy)
+    {
+        if (defeatedEnemy == null) return;
+
+        string defeatedGroup = defeatedEnemy.EnemyGroup;
+        EnemyController lastEnemyInGroup = null;
+        int enemiesInGroup = 0;
+
+        EnemyController[] enemies = FindObjectsByType<EnemyController>(FindObjectsSortMode.None);
+        foreach (EnemyController enemy in enemies)
+        {
+            if (enemy == null ||
+                enemy == defeatedEnemy ||
+                enemy.currentState == EnemyController.EnemyState.SpinningToFood ||
+                enemy.EnemyGroup != defeatedGroup)
+            {
+                continue;
+            }
+
+            enemiesInGroup++;
+            lastEnemyInGroup = enemy;
+        }
+
+        if (enemiesInGroup == 1 && lastEnemyInGroup != null)
+        {
+            lastEnemyInGroup.BecomeAngry();
         }
     }
 }

@@ -1,12 +1,14 @@
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyMovement))]
-[RequireComponent(typeof(EnemyVerticalPatrol))]
 [RequireComponent(typeof(EnemyBubble))]
 [RequireComponent(typeof(EnemyFoodDrop))]
 public class EnemyController : MonoBehaviour
 {
     public enum EnemyState { Walking, TrappedBubble, Angry, SpinningToFood }
+
+    [Header("Grupo")]
+    public string enemyGroup = "";
 
     [Header("Movimiento")]
     public float normalSpeed = 2f;
@@ -39,6 +41,7 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public Collider2D enemyCollider;
 
     [HideInInspector] public EnemyMovement movement;
+    [HideInInspector] public EnemyDiagonalMovement diagonalMovement;
     [HideInInspector] public EnemyVerticalPatrol verticalPatrol;
     [HideInInspector] public EnemyBubble bubble;
     [HideInInspector] public EnemyFoodDrop foodDrop;
@@ -46,6 +49,20 @@ public class EnemyController : MonoBehaviour
     [HideInInspector] public EnemyState currentState = EnemyState.Walking;
     [HideInInspector] public Vector2 currentBubbleDirection;
     [HideInInspector] public float originalGravity;
+
+    public string EnemyGroup
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(enemyGroup))
+            {
+                return enemyGroup;
+            }
+
+            int cloneSuffixIndex = gameObject.name.IndexOf(" (", System.StringComparison.Ordinal);
+            return cloneSuffixIndex >= 0 ? gameObject.name.Substring(0, cloneSuffixIndex) : gameObject.name;
+        }
+    }
 
     private void Awake()
     {
@@ -60,11 +77,9 @@ public class EnemyController : MonoBehaviour
             movement = gameObject.AddComponent<EnemyMovement>();
         }
 
+        diagonalMovement = GetComponent<EnemyDiagonalMovement>();
+
         verticalPatrol = GetComponent<EnemyVerticalPatrol>();
-        if (verticalPatrol == null)
-        {
-            verticalPatrol = gameObject.AddComponent<EnemyVerticalPatrol>();
-        }
 
         bubble = GetComponent<EnemyBubble>();
         if (bubble == null)
@@ -101,7 +116,12 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        if (verticalPatrol.OnUpdate())
+        if (verticalPatrol != null && verticalPatrol.OnUpdate())
+        {
+            return;
+        }
+
+        if (diagonalMovement != null && diagonalMovement.OnUpdate())
         {
             return;
         }
@@ -117,6 +137,35 @@ public class EnemyController : MonoBehaviour
     public void PopEnemy()
     {
         foodDrop.PopEnemy();
+    }
+
+    public void DefeatByWater()
+    {
+        if (currentState == EnemyState.SpinningToFood) return;
+
+        currentState = EnemyState.TrappedBubble;
+        currentSpeed = 0f;
+        rb.gravityScale = 0f;
+        rb.linearVelocity = Vector2.zero;
+        enemyCollider.isTrigger = true;
+
+        foodDrop.PopEnemy();
+    }
+
+    public void BecomeAngry()
+    {
+        if (currentState == EnemyState.SpinningToFood) return;
+
+        currentState = EnemyState.Angry;
+        currentSpeed = angrySpeed;
+
+        rb.gravityScale = originalGravity;
+        rb.linearVelocity = Vector2.zero;
+
+        enemyCollider.isTrigger = false;
+        IgnoreCollisionsWithOtherEnemies();
+
+        anim.SetInteger("stateAnim", 3);
     }
 
     public void IgnoreCollisionsWithOtherEnemies()
@@ -144,7 +193,7 @@ public class EnemyController : MonoBehaviour
         if ((currentState == EnemyState.TrappedBubble || currentState == EnemyState.SpinningToFood)
             && other.CompareTag("BubbleTurn"))
         {
-            bubble.ChangeBubbleDirection(other.name);
+            bubble.ChangeBubbleDirection(other);
             return;
         }
 

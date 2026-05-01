@@ -2,7 +2,13 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    public float wallCheckDistance = 0.3f;
+    public LayerMask wallMask;
+    public bool visualFacesRight = true;
+    public float angryTurnDeadZone = 0.35f;
+
     private EnemyController enemyController;
+    private Transform player;
 
     private void Awake()
     {
@@ -11,8 +17,9 @@ public class EnemyMovement : MonoBehaviour
 
     public void OnUpdate()
     {
-        Move();
+        UpdateAngryDirection();
         CheckEdge();
+        Move();
     }
 
     private void Move()
@@ -24,35 +31,83 @@ public class EnemyMovement : MonoBehaviour
         );
     }
 
+    private void UpdateAngryDirection()
+    {
+        if (enemyController.currentState != EnemyController.EnemyState.Angry) return;
+
+        if (player == null)
+        {
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+            if (playerObject != null)
+            {
+                player = playerObject.transform;
+            }
+        }
+
+        if (player == null) return;
+
+        float distanceToPlayer = player.position.x - transform.position.x;
+        if (Mathf.Abs(distanceToPlayer) <= angryTurnDeadZone) return;
+
+        bool shouldMoveRight = distanceToPlayer > 0f;
+        if (enemyController.movingRight != shouldMoveRight)
+        {
+            enemyController.movingRight = shouldMoveRight;
+            UpdateGroundCheckPosition();
+        }
+    }
+
     private void CheckEdge()
     {
         if (enemyController.groundCheck == null) return;
 
-        RaycastHit2D hit = Physics2D.Raycast(
+        RaycastHit2D groundHit = Physics2D.Raycast(
             enemyController.groundCheck.position,
             Vector2.down,
             enemyController.groundCheckDistance,
             enemyController.groundMask
         );
 
-        if (hit.collider == null)
+        bool foundWall = false;
+        if (wallMask.value != 0)
+        {
+            Vector2 wallDirection = enemyController.movingRight ? Vector2.right : Vector2.left;
+            Vector2 wallOrigin = GetWallCheckOrigin(wallDirection);
+
+            RaycastHit2D wallHit = Physics2D.Raycast(
+                wallOrigin,
+                wallDirection,
+                wallCheckDistance,
+                wallMask
+            );
+
+            foundWall = wallHit.collider != null;
+        }
+
+        if (groundHit.collider == null || foundWall)
         {
             Flip();
         }
+    }
+
+    private Vector2 GetWallCheckOrigin(Vector2 wallDirection)
+    {
+        if (enemyController.enemyCollider == null) return transform.position;
+
+        Bounds bounds = enemyController.enemyCollider.bounds;
+        float x = wallDirection.x > 0f ? bounds.max.x : bounds.min.x;
+
+        return new Vector2(x, bounds.center.y);
     }
 
     private void Flip()
     {
         enemyController.movingRight = !enemyController.movingRight;
         UpdateGroundCheckPosition();
-
-        if (enemyController.visual != null)
+        if (enemyController.verticalPatrol != null)
         {
-            Vector3 scale = enemyController.visual.localScale;
-            scale.x *= -1;
-            enemyController.visual.localScale = scale;
+            enemyController.verticalPatrol.RegisterHorizontalFlip();
         }
-        enemyController.verticalPatrol.RegisterHorizontalFlip();
     }
 
     public void UpdateGroundCheckPosition()
@@ -64,5 +119,19 @@ public class EnemyMovement : MonoBehaviour
         Vector3 pos = enemyController.groundCheck.localPosition;
         pos.x = Mathf.Abs(enemyController.groundCheckOffset) * dir;
         enemyController.groundCheck.localPosition = pos;
+
+        UpdateVisualFacing();
+    }
+
+    private void UpdateVisualFacing()
+    {
+        if (enemyController.visual == null) return;
+
+        Vector3 scale = enemyController.visual.localScale;
+        float xMagnitude = Mathf.Abs(scale.x);
+        bool shouldFlipVisual = enemyController.movingRight != visualFacesRight;
+
+        scale.x = shouldFlipVisual ? -xMagnitude : xMagnitude;
+        enemyController.visual.localScale = scale;
     }
 }

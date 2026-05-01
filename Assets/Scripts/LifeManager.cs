@@ -18,6 +18,19 @@ public class LifeManager : MonoBehaviour
     private bool isInvulnerable = false;
     public float invulnerableTime = 1.5f;
 
+    public bool IsPlayerInvulnerable
+    {
+        get
+        {
+            if (isInvulnerable) return true;
+
+            if (player == null) return false;
+
+            PlayerController pc = player.GetComponent<PlayerController>();
+            return pc != null && pc.isWaterBubbleRiding;
+        }
+    }
+
     private void Awake()
     {
         Instance = this;
@@ -30,7 +43,7 @@ public class LifeManager : MonoBehaviour
 
     public void LoseLife()
 {
-    if (isInvulnerable) return;
+    if (IsPlayerInvulnerable) return;
 
     StartCoroutine(LoseLifeRoutine());
 }

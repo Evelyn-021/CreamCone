@@ -214,6 +214,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c902cd463d6d4722b7f35baf3f463e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFoodDrop
+  rareFoodPrefabs:
+  - {fileID: 100000, guid: d0f9807be52b4116844d39c2ef7b8a0e, type: 3}
+  - {fileID: 110000, guid: 25fbdb7e5e384d60a3c4db944b92a20c, type: 3}
+  - {fileID: 120000, guid: da5ed14272ea474f93ac1ba1740b486d, type: 3}
+  - {fileID: 130000, guid: 8dbbca15473445a9be4a0afec8b3fc45, type: 3}
+  rareFoodChance: 0.18
+  fallingDiamondPrefabs:
+  - {fileID: 140000, guid: fb31c405bac740c4a27455a23f053e63, type: 3}
+  - {fileID: 150000, guid: 621cf929e3a946409f3a2c0c095e8b3e, type: 3}
+  fallingDiamondChance: 0.25
+  diamondSpawnMinX: -4.6
+  diamondSpawnMaxX: 5.8
+  diamondSpawnY: 2.55
+  waterBubblePrefabs:
+  - {fileID: 5298497062931976787, guid: 748de24456d01ec4e81b5d539896b24a, type: 3}
+  waterBubbleChance: 0.4
 --- !u!114 &1366315411720884881
 MonoBehaviour:
   m_ObjectHideFlags: 0
