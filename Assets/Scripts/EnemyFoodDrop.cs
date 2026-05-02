@@ -19,6 +19,10 @@ public class EnemyFoodDrop : MonoBehaviour
     public GameObject[] waterBubblePrefabs;
     [Range(0f, 1f)] public float waterBubbleChance = 0.12f;
 
+    [Header("Plataformas de fruta")]
+    public string enemy2FoodPlatformName = "SolidGround2";
+    public string enemy3FoodPlatformName = "SolidGround3";
+
     private EnemyController enemyController;
     private float spinTimer;
 
@@ -80,6 +84,7 @@ public class EnemyFoodDrop : MonoBehaviour
             FoodDrop foodDrop = food.GetComponent<FoodDrop>();
             if (foodDrop != null)
             {
+                foodDrop.requiredLandingPlatformName = GetFoodLandingPlatformName();
                 foodDrop.StartGuidedDropToPlatform();
             }
 
@@ -115,6 +120,30 @@ public class EnemyFoodDrop : MonoBehaviour
         }
 
         return enemyController.foodPrefabs[Random.Range(0, enemyController.foodPrefabs.Length)];
+    }
+
+    private string GetFoodLandingPlatformName()
+    {
+        string groupName = enemyController.EnemyGroup;
+        string objectName = enemyController.gameObject.name;
+
+        if (MatchesEnemyName(groupName, objectName, "Enemy2"))
+        {
+            return enemy2FoodPlatformName;
+        }
+
+        if (MatchesEnemyName(groupName, objectName, "Enemy3"))
+        {
+            return enemy3FoodPlatformName;
+        }
+
+        return "";
+    }
+
+    private bool MatchesEnemyName(string groupName, string objectName, string enemyName)
+    {
+        return groupName.IndexOf(enemyName, System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+               objectName.IndexOf(enemyName, System.StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
     private void TrySpawnFallingDiamond()

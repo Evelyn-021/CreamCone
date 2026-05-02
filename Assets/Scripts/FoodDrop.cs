@@ -19,6 +19,7 @@ public class FoodDrop : MonoBehaviour
     public float topLimitClearance = 1.6f;
     public string strictLandingSceneName = "Level2";
     public float minimumSideClearance = 1.1f;
+    public string requiredLandingPlatformName = "";
     public LayerMask platformMask;
 
     private Rigidbody2D rb;
@@ -143,6 +144,7 @@ public class FoodDrop : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, platformSearchDownDistance, platformMask);
 
         if (hit.collider == null) return;
+        if (!IsAllowedPlatformHit(hit)) return;
         if (onlyAccessiblePlatforms && !IsAccessiblePlatformHit(hit)) return;
         if (!onlyAccessiblePlatforms && !IsReasonableFallbackPlatformHit(hit)) return;
 
@@ -221,6 +223,11 @@ public class FoodDrop : MonoBehaviour
 
     private bool IsBlockedByNearbySideWall(Vector2 point)
     {
+        if (!string.IsNullOrWhiteSpace(requiredLandingPlatformName))
+        {
+            return false;
+        }
+
         if (SceneManager.GetActiveScene().name != strictLandingSceneName)
         {
             return false;
@@ -240,7 +247,28 @@ public class FoodDrop : MonoBehaviour
     {
         Vector2 origin = point + Vector2.up * 0.25f;
         RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, 0.6f, platformMask);
-        return hit.collider != null;
+        return hit.collider != null && IsAllowedPlatformHit(hit);
+    }
+
+    private bool IsAllowedPlatformHit(RaycastHit2D hit)
+    {
+        if (string.IsNullOrWhiteSpace(requiredLandingPlatformName))
+        {
+            return true;
+        }
+
+        Transform current = hit.collider.transform;
+        while (current != null)
+        {
+            if (current.name.IndexOf(requiredLandingPlatformName, System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return true;
+            }
+
+            current = current.parent;
+        }
+
+        return false;
     }
 
     private void EnsurePlatformMask()
