@@ -80,6 +80,11 @@ public void CheckGround()
             playerController.rb.gravityScale = playerController.normalGravity;
             coyoteCounter = 0;
             hasJumped = true;
+
+            if (GameAudio.Instance != null)
+            {
+                GameAudio.Instance.PlayJump();
+            }
         }
         else //no se ha realizado el salto
         {
@@ -115,6 +120,11 @@ public void JumpUpdates()
             playerController.rb.gravityScale = playerController.normalGravity;
             coyoteCounter = 0;
             bufferJumpCounter = 0;
+
+            if (GameAudio.Instance != null)
+            {
+                GameAudio.Instance.PlayJump();
+            }
             }
 
         }

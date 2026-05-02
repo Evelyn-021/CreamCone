@@ -28,13 +28,27 @@ public class BitmapScoreUI : MonoBehaviour
 
     private void Start()
     {
+        if (isScoreCounter)
+        {
+            score = GameSession.CurrentScore;
+        }
+
         ApplyHudLayout();
         UpdateScoreUI();
     }
 
     public void AddScore(int amount)
     {
-        score += amount;
+        if (isScoreCounter)
+        {
+            GameSession.Ensure().AddScore(amount);
+            score = GameSession.CurrentScore;
+        }
+        else
+        {
+            score += amount;
+        }
+
         UpdateScoreUI();
     }
 

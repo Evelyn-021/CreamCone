@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 [ HideInInspector] public Animator animPlayer;
 [HideInInspector] public bool isDead;
 [HideInInspector] public bool isWaterBubbleRiding;
+[HideInInspector] public bool isRespawning;
 
     public Controles controles;
 
@@ -50,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isWaterBubbleRiding) return;
+        if (isWaterBubbleRiding || isRespawning || isDead) return;
 
         movement.Move();//Movimiento
         jump.OnUpdate(); //salto
@@ -58,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (isWaterBubbleRiding) return;
+        if (isWaterBubbleRiding || isRespawning) return;
 
         updateAnimsPlayer.UpdateAnimation();
     }
@@ -90,15 +91,21 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
 {
+    if (isRespawning || isDead) return;
+
     attack.StartAttack();
 }
 
       private void OnJump (InputAction.CallbackContext context)
     {
+        if (isRespawning || isDead) return;
+
         jump.JumpHold();
     }
 private void OnJumpRelease (InputAction.CallbackContext context)
     {
+        if (isRespawning || isDead) return;
+
         jump.JumpRelease();
     }
 
@@ -121,5 +128,15 @@ private void OnJumpRelease (InputAction.CallbackContext context)
     rb.linearVelocity = Vector2.zero;
 
     new DeathPlayerStateAnim(animPlayer);
+}
+
+public void SetRespawning(bool respawning)
+{
+    isRespawning = respawning;
+
+    if (rb != null)
+    {
+        rb.linearVelocity = Vector2.zero;
+    }
 }
 }

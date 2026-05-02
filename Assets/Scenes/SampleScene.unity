@@ -984,6 +984,8 @@ MonoBehaviour:
   isScoreCounter: 1
   numbersContainer: {fileID: 331897103}
   digitPrefab: {fileID: 1786595909494678884, guid: 8744b86287d15274c893f26d61afe6d7, type: 3}
+  autoLayoutHud: 1
+  digitScale: 2
   numberSprites:
   - {fileID: -8263745948689686167, guid: 52a5210fb4316034a8dd52aede5e345d, type: 3}
   - {fileID: -5799813249555538992, guid: 52a5210fb4316034a8dd52aede5e345d, type: 3}
@@ -5046,6 +5048,7 @@ MonoBehaviour:
   animPlayer: {fileID: 0}
   isDead: 0
   isWaterBubbleRiding: 0
+  isRespawning: 0
   speed: 5
   normalGravity: 2
   fallGravity: 4
@@ -5175,6 +5178,8 @@ MonoBehaviour:
   isScoreCounter: 0
   numbersContainer: {fileID: 579057321}
   digitPrefab: {fileID: 1786595909494678884, guid: 8744b86287d15274c893f26d61afe6d7, type: 3}
+  autoLayoutHud: 1
+  digitScale: 2
   numberSprites:
   - {fileID: -8263745948689686167, guid: 52a5210fb4316034a8dd52aede5e345d, type: 3}
   - {fileID: -5799813249555538992, guid: 52a5210fb4316034a8dd52aede5e345d, type: 3}
@@ -5540,6 +5545,7 @@ MonoBehaviour:
   player: {fileID: 849328975}
   respawnPoint: {fileID: 1919791844}
   invulnerableTime: 1.5
+  respawnBlinkInterval: 0.15
 --- !u!4 &1216127097
 Transform:
   m_ObjectHideFlags: 0
@@ -5612,7 +5618,7 @@ Transform:
   m_GameObject: {fileID: 1238461815}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.1, y: 8.72, z: 0}
+  m_LocalPosition: {x: 2.1, y: 7.96, z: 0}
   m_LocalScale: {x: 19.31748, y: 0.8125, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6312,6 +6318,8 @@ MonoBehaviour:
   isScoreCounter: 0
   numbersContainer: {fileID: 1163396706}
   digitPrefab: {fileID: 1786595909494678884, guid: 8744b86287d15274c893f26d61afe6d7, type: 3}
+  autoLayoutHud: 1
+  digitScale: 2
   numberSprites:
   - {fileID: -8263745948689686167, guid: 52a5210fb4316034a8dd52aede5e345d, type: 3}
   - {fileID: -5799813249555538992, guid: 52a5210fb4316034a8dd52aede5e345d, type: 3}
@@ -6486,7 +6494,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.06292689, y: 0.07477486}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -6496,7 +6504,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.1258537, y: 1.1495495}
   m_EdgeRadius: 0
 --- !u!1001 &1849880394
 PrefabInstance:
@@ -7222,6 +7230,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2147000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2147000002}
+  - component: {fileID: 2147000003}
+  m_Layer: 0
+  m_Name: GameAudio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2147000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2147000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c9f0a9a3ce5461a92ed4a9cb0d671ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinClip: {fileID: 8300000, guid: 0b5de865586844050b285d4a3fd6b033, type: 3}
+  attackClip: {fileID: 8300000, guid: 6f686c78626574f5491aaf5f58b54b3e, type: 3}
+  deadClip: {fileID: 8300000, guid: e34e5de4fb6f0405987dc922e27778b9, type: 3}
+  jumpClip: {fileID: 8300000, guid: 76f8c00779b924bd1afa3e7a8ca2fa3e, type: 3}
+  popEnemyClip: {fileID: 8300000, guid: 91daf65c6f4b34601987b01c16ee394c, type: 3}
+  powerUpClip: {fileID: 8300000, guid: fc28225342df0407aae453af7703eca9, type: 3}
+  respawnClip: {fileID: 8300000, guid: 26177f0f1d680484dbb2683c54e6117c, type: 3}
+  volume: 1
 --- !u!1001 &4669149095191322921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7308,3 +7368,4 @@ SceneRoots:
   - {fileID: 1216127097}
   - {fileID: 1919791844}
   - {fileID: 2126735202}
+  - {fileID: 2147000002}

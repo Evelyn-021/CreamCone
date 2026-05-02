@@ -191,6 +191,7 @@ public class MainMenuUI : MonoBehaviour
         if (isLoadingScene) return;
 
         isLoadingScene = true;
+        GameSession.Ensure().ResetRun(3);
         SceneManager.LoadScene(firstSceneName);
     }
 

@@ -14,9 +14,11 @@ public class LifeManager : MonoBehaviour
     [Header("Jugador")]
     public Transform player;
     public Transform respawnPoint;
+    public string gameOverSceneName = "GameOver";
 
     private bool isInvulnerable = false;
-    public float invulnerableTime = 1.5f;
+    public float invulnerableTime = 3f;
+    public float respawnBlinkInterval = 0.15f;
 
     public bool IsPlayerInvulnerable
     {
@@ -38,6 +40,7 @@ public class LifeManager : MonoBehaviour
 
     private void Start()
     {
+        lives = GameSession.CurrentLives;
         UpdateLivesUI();
     }
 
@@ -59,20 +62,24 @@ private System.Collections.IEnumerator LoseLifeRoutine()
         pc.Die();
     }
 
+    if (GameAudio.Instance != null)
+    {
+        GameAudio.Instance.PlayDead();
+    }
+
     yield return new WaitForSeconds(0.6f);
 
     lives--;
+    GameSession.Ensure().SetLives(lives);
     UpdateLivesUI();
 
     if (lives <= 0)
     {
-        RestartLevel();
+        GoToGameOver();
         yield break;
     }
 
-    RespawnPlayer();
-
-    yield return new WaitForSeconds(invulnerableTime);
+    yield return RespawnPlayerRoutine();
 
     isInvulnerable = false;
 }
@@ -90,23 +97,77 @@ private System.Collections.IEnumerator LoseLifeRoutine()
         }
     }
 
-    private void RespawnPlayer()
+    private System.Collections.IEnumerator RespawnPlayerRoutine()
 {
-    if (player != null && respawnPoint != null)
+    if (player == null || respawnPoint == null)
     {
-        player.position = respawnPoint.position;
+        yield break;
+    }
 
-        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.simulated = true;
-            rb.linearVelocity = Vector2.zero;
-        }
+    player.position = respawnPoint.position;
 
-        PlayerController pc = player.GetComponent<PlayerController>();
-        if (pc != null)
+    Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+    RigidbodyConstraints2D originalConstraints = RigidbodyConstraints2D.None;
+    if (rb != null)
+    {
+        originalConstraints = rb.constraints;
+        rb.simulated = true;
+        rb.linearVelocity = Vector2.zero;
+        rb.constraints = originalConstraints | RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+    }
+
+    PlayerController pc = player.GetComponent<PlayerController>();
+    if (pc != null)
+    {
+        pc.isDead = false;
+        pc.SetRespawning(true);
+    }
+
+    if (GameAudio.Instance != null)
+    {
+        GameAudio.Instance.PlayRespawn();
+    }
+
+    yield return BlinkPlayer(invulnerableTime);
+
+    if (pc != null)
+    {
+        pc.SetRespawning(false);
+    }
+
+    if (rb != null)
+    {
+        rb.constraints = originalConstraints;
+        rb.linearVelocity = Vector2.zero;
+    }
+}
+
+private System.Collections.IEnumerator BlinkPlayer(float duration)
+{
+    SpriteRenderer[] renderers = player.GetComponentsInChildren<SpriteRenderer>();
+    float timer = 0f;
+    bool visible = true;
+
+    while (timer < duration)
+    {
+        visible = !visible;
+        SetPlayerRenderersEnabled(renderers, visible);
+
+        float waitTime = Mathf.Min(respawnBlinkInterval, duration - timer);
+        yield return new WaitForSeconds(waitTime);
+        timer += waitTime;
+    }
+
+    SetPlayerRenderersEnabled(renderers, true);
+}
+
+private void SetPlayerRenderersEnabled(SpriteRenderer[] renderers, bool enabled)
+{
+    foreach (SpriteRenderer spriteRenderer in renderers)
+    {
+        if (spriteRenderer != null)
         {
-            pc.isDead = false;
+            spriteRenderer.enabled = enabled;
         }
     }
 }
@@ -118,8 +179,8 @@ private System.Collections.IEnumerator LoseLifeRoutine()
         isInvulnerable = false;
     }
 
-    private void RestartLevel()
+    private void GoToGameOver()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(gameOverSceneName);
     }
 }

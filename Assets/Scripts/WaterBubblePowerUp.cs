@@ -6,6 +6,7 @@ public class WaterBubblePowerUp : MonoBehaviour
     public float rideSpeed = 4.5f;
     public float rideDuration = 7f;
     public float playerFollowOffsetY = -0.05f;
+    public float powerUpSoundInterval = 1.25f;
     public Vector2 areaMin = new Vector2(-4.6f, -2.35f);
     public Vector2 areaMax = new Vector2(5.8f, 2.55f);
 
@@ -13,6 +14,7 @@ public class WaterBubblePowerUp : MonoBehaviour
     private PlayerController player;
     private bool riding;
     private float rideTimer;
+    private float powerUpSoundTimer;
     private int cornerIndex;
 
     private readonly Vector2[] corners = new Vector2[4];
@@ -47,6 +49,13 @@ public class WaterBubblePowerUp : MonoBehaviour
     private void UpdateRide()
     {
         rideTimer -= Time.fixedDeltaTime;
+        powerUpSoundTimer -= Time.fixedDeltaTime;
+
+        if (powerUpSoundTimer <= 0f)
+        {
+            PlayPowerUpSound();
+            powerUpSoundTimer = powerUpSoundInterval;
+        }
 
         Vector2 target = corners[cornerIndex];
         Vector2 current = rb.position;
@@ -77,6 +86,7 @@ public class WaterBubblePowerUp : MonoBehaviour
 
         riding = true;
         rideTimer = rideDuration;
+        powerUpSoundTimer = 0f;
         player = targetPlayer;
 
         rb.gravityScale = 0f;
@@ -86,6 +96,14 @@ public class WaterBubblePowerUp : MonoBehaviour
         cornerIndex = GetClosestCornerIndex(transform.position);
 
         player.SetWaterBubbleRide(true);
+    }
+
+    private void PlayPowerUpSound()
+    {
+        if (GameAudio.Instance != null)
+        {
+            GameAudio.Instance.PlayPowerUp();
+        }
     }
 
     private void EndRide()

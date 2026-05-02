@@ -26,6 +26,11 @@ public class PlayerAttack : MonoBehaviour
         Vector2 dir = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
 
         proj.GetComponent<IceBubbleProjectile>().SetDirection(dir);
+
+        if (GameAudio.Instance != null)
+        {
+            GameAudio.Instance.PlayAttack();
+        }
     }
 
     public void EndAttack()

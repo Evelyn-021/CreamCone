@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyFoodDrop : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class EnemyFoodDrop : MonoBehaviour
     public float diamondSpawnY = 2.55f;
 
     [Header("Water Bubble")]
+    public string waterBubbleSceneName = "Level2";
     public GameObject[] waterBubblePrefabs;
     [Range(0f, 1f)] public float waterBubbleChance = 0.12f;
 
@@ -43,6 +45,11 @@ public class EnemyFoodDrop : MonoBehaviour
         enemyController.enemyCollider.isTrigger = true;
 
         enemyController.anim.SetInteger("stateAnim", 4);
+
+        if (GameAudio.Instance != null)
+        {
+            GameAudio.Instance.PlayPopEnemy();
+        }
     }
 
     public void UpdateSpinToFood()
@@ -69,7 +76,12 @@ public class EnemyFoodDrop : MonoBehaviour
 
         if (selectedFood != null)
         {
-            Instantiate(selectedFood, transform.position, Quaternion.identity);
+            GameObject food = Instantiate(selectedFood, transform.position, Quaternion.identity);
+            FoodDrop foodDrop = food.GetComponent<FoodDrop>();
+            if (foodDrop != null)
+            {
+                foodDrop.StartGuidedDropToPlatform();
+            }
 
             if (LevelGoalManager.Instance != null)
             {
@@ -128,6 +140,11 @@ public class EnemyFoodDrop : MonoBehaviour
 
     private void TrySpawnWaterBubble()
     {
+        if (SceneManager.GetActiveScene().name != waterBubbleSceneName)
+        {
+            return;
+        }
+
         if (waterBubblePrefabs == null ||
             waterBubblePrefabs.Length == 0 ||
             Random.value >= waterBubbleChance)
