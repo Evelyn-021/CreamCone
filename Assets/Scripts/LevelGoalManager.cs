@@ -87,7 +87,9 @@ public class LevelGoalManager : MonoBehaviour
             lastEnemyInGroup = enemy;
         }
 
-        if (enemiesInGroup == 1 && lastEnemyInGroup != null)
+        if (enemiesInGroup == 1 &&
+            lastEnemyInGroup != null &&
+            lastEnemyInGroup.CanBecomeAngryAsLastEnemy())
         {
             lastEnemyInGroup.BecomeAngry();
         }

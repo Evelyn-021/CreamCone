@@ -7281,7 +7281,13 @@ MonoBehaviour:
   popEnemyClip: {fileID: 8300000, guid: 91daf65c6f4b34601987b01c16ee394c, type: 3}
   powerUpClip: {fileID: 8300000, guid: fc28225342df0407aae453af7703eca9, type: 3}
   respawnClip: {fileID: 8300000, guid: 26177f0f1d680484dbb2683c54e6117c, type: 3}
+  menuMusicClip: {fileID: 8300000, guid: 2f946f3eea2dc4048b6f040001fc433c, type: 3}
+  gameMusicClip: {fileID: 8300000, guid: 8b19a567df08e40aa97756bf728db4c1, type: 3}
+  menuSceneName: MainMenu
+  firstLevelSceneName: SampleScene
+  secondLevelSceneName: Level2
   volume: 1
+  musicVolume: 0.45
 --- !u!1001 &4669149095191322921
 PrefabInstance:
   m_ObjectHideFlags: 0

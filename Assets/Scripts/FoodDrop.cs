@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FoodDrop : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class FoodDrop : MonoBehaviour
     public float minimumGuidedDropDistance = 1.2f;
     public float minimumWalkableSurfaceWidth = 1.5f;
     public float topLimitClearance = 1.6f;
+    public string strictLandingSceneName = "Level2";
+    public float minimumSideClearance = 1.1f;
     public LayerMask platformMask;
 
     private Rigidbody2D rb;
@@ -167,13 +170,20 @@ public class FoodDrop : MonoBehaviour
             return false;
         }
 
+        if (IsBlockedByNearbySideWall(hit.point))
+        {
+            return false;
+        }
+
         return HasWalkableSurfaceAround(hit.point);
     }
 
     private bool IsReasonableFallbackPlatformHit(RaycastHit2D hit)
     {
         float dropDistance = transform.position.y - hit.point.y;
-        return dropDistance >= minimumGuidedDropDistance && !IsTooCloseToTopLimit(hit.point.y);
+        return dropDistance >= minimumGuidedDropDistance &&
+               !IsTooCloseToTopLimit(hit.point.y) &&
+               !IsBlockedByNearbySideWall(hit.point);
     }
 
     private bool IsTooCloseToTopLimit(float platformY)
@@ -207,6 +217,23 @@ public class FoodDrop : MonoBehaviour
         return HasPlatformBelow(point + Vector2.left * halfWidth) &&
                HasPlatformBelow(point) &&
                HasPlatformBelow(point + Vector2.right * halfWidth);
+    }
+
+    private bool IsBlockedByNearbySideWall(Vector2 point)
+    {
+        if (SceneManager.GetActiveScene().name != strictLandingSceneName)
+        {
+            return false;
+        }
+
+        Vector2 origin = point + Vector2.up * platformLandingOffset;
+        return HasSideWall(origin, Vector2.left) || HasSideWall(origin, Vector2.right);
+    }
+
+    private bool HasSideWall(Vector2 origin, Vector2 direction)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, minimumSideClearance, platformMask);
+        return hit.collider != null;
     }
 
     private bool HasPlatformBelow(Vector2 point)

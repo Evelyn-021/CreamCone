@@ -492,6 +492,64 @@ MonoBehaviour:
   letterSSprite: {fileID: 3164979671929778948, guid: 52a5210fb4316034a8dd52aede5e345d, type: 3}
   letterTSprite: {fileID: -9023797222579814646, guid: 52a5210fb4316034a8dd52aede5e345d, type: 3}
   backgroundColor: {r: 0.05, g: 0.02, b: 0.08, a: 1}
+--- !u!1 &2147000201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2147000202}
+  - component: {fileID: 2147000203}
+  m_Layer: 0
+  m_Name: GameAudio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2147000202
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000201}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2147000203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c9f0a9a3ce5461a92ed4a9cb0d671ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinClip: {fileID: 8300000, guid: 0b5de865586844050b285d4a3fd6b033, type: 3}
+  attackClip: {fileID: 8300000, guid: 6f686c78626574f5491aaf5f58b54b3e, type: 3}
+  deadClip: {fileID: 8300000, guid: e34e5de4fb6f0405987dc922e27778b9, type: 3}
+  jumpClip: {fileID: 8300000, guid: 76f8c00779b924bd1afa3e7a8ca2fa3e, type: 3}
+  popEnemyClip: {fileID: 8300000, guid: 91daf65c6f4b34601987b01c16ee394c, type: 3}
+  powerUpClip: {fileID: 8300000, guid: fc28225342df0407aae453af7703eca9, type: 3}
+  respawnClip: {fileID: 8300000, guid: 26177f0f1d680484dbb2683c54e6117c, type: 3}
+  menuMusicClip: {fileID: 8300000, guid: 2f946f3eea2dc4048b6f040001fc433c, type: 3}
+  gameMusicClip: {fileID: 8300000, guid: 8b19a567df08e40aa97756bf728db4c1, type: 3}
+  menuSceneName: MainMenu
+  firstLevelSceneName: SampleScene
+  secondLevelSceneName: Level2
+  volume: 1
+  musicVolume: 0.45
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -499,3 +557,4 @@ SceneRoots:
   - {fileID: 526589809}
   - {fileID: 1804227038}
   - {fileID: 687305839}
+  - {fileID: 2147000202}

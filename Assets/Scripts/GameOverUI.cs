@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -46,8 +45,7 @@ public class GameOverUI : MonoBehaviour
     {
         if (loadingMenu) return;
 
-        if ((Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame) ||
-            WasAnyGamepadButtonPressed())
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
         {
             LoadMainMenu();
         }
@@ -220,21 +218,6 @@ public class GameOverUI : MonoBehaviour
 
         loadingMenu = true;
         StartCoroutine(LoadMainMenuNextFrame());
-    }
-
-    private bool WasAnyGamepadButtonPressed()
-    {
-        if (Gamepad.current == null) return false;
-
-        foreach (InputControl control in Gamepad.current.allControls)
-        {
-            if (control is ButtonControl button && button.wasPressedThisFrame)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private IEnumerator LoadMainMenuNextFrame()

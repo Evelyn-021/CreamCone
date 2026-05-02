@@ -220,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b830b8a4569c4ec18f20dcfb3a1ebc7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBubble
+  bubbleTurnZoneFilter: 2
 --- !u!114 &4479466545820707827
 MonoBehaviour:
   m_ObjectHideFlags: 0

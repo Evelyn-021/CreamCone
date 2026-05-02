@@ -230,6 +230,11 @@ public class EnemyController : MonoBehaviour
         return currentState == EnemyState.TrappedBubble;
     }
 
+    public bool CanBecomeAngryAsLastEnemy()
+    {
+        return currentState == EnemyState.Walking || currentState == EnemyState.Angry;
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (groundCheck != null)

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -59,8 +58,7 @@ public class GameWinUI : MonoBehaviour
     {
         if (loadingMenu) return;
 
-        if ((Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame) ||
-            WasAnyGamepadButtonPressed())
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
         {
             LoadMainMenu();
         }
@@ -312,21 +310,6 @@ public class GameWinUI : MonoBehaviour
     private void OnReturnInput(InputAction.CallbackContext context)
     {
         LoadMainMenu();
-    }
-
-    private bool WasAnyGamepadButtonPressed()
-    {
-        if (Gamepad.current == null) return false;
-
-        foreach (InputControl control in Gamepad.current.allControls)
-        {
-            if (control is ButtonControl button && button.wasPressedThisFrame)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private void LoadMainMenu()
